@@ -1,0 +1,2 @@
+<!--pages/b/b.wxml-->
+<text>{{finall}}</text>

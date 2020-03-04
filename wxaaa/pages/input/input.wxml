@@ -1,0 +1,12 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+<view>QQ号测吉凶</view>
+    <view class="page__bd">
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput='qq' placeholder="请输入qq"/>
+                </view>
+            </view>
+            <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="showTop">确定</button>
+        </view>
+</view>
+

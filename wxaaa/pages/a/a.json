@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "笑话",
+  "navigationBarBackgroundColor": "#527354",
+  "enablePullDownRefresh": true ,
+  "disableScroll": false ,
+  "backgroundTextStyle": "dark"
+}

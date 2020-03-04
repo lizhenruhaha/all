@@ -1,0 +1,4 @@
+<!--pages/myslef/myself.wxml-->
+<button bindtap="getcookie">获取cookie,并且保存</button>
+<button bindtap="sendcookie">读取本地并发送cookie</button>
+<button bindtap="authorize">认证登录</button>

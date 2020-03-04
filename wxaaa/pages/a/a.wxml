@@ -1,0 +1,6 @@
+<!--pages/a/a.wxml-->
+<view wx:for='{{content}}'>
+<view decode="{{true}}" space="{{true}}">{{item.content}}</view>
+</view>>
+<view class="page__bd page__bd_spacing">
+        </view>
