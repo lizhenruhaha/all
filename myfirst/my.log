@@ -1,0 +1,10 @@
+2020-03-10 10:58:55,793 [MainThread :9332]
+2020-03-10 10:59:34,077 [MainThread :12508]
+2020-03-10 11:05:26,332 [MainThread :5596]-Something went wrong b 
+2020-03-10 14:02:14,462 [MainThread :3188]-Something went wrong b 
+2020-03-16 10:39:45,269 [Thread-1 :1288]-Not Found: /favicon.ico 
+2020-03-16 10:39:45,269 [Thread-1 :1288]-"GET /favicon.ico HTTP/1.1" 404 2190 
+2020-03-16 10:53:35,394 [Thread-1 :11156]-Not Found: /favicon.ico 
+2020-03-16 10:53:35,395 [Thread-1 :11156]-"GET /favicon.ico HTTP/1.1" 404 2190 
+2020-03-17 09:16:41,501 [Thread-1 :10772]-Not Found: /favicon.ico 
+2020-03-17 09:16:41,502 [Thread-1 :10772]-"GET /favicon.ico HTTP/1.1" 404 2190 

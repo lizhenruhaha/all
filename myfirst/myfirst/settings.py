@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 每生成一个app应用,就要在这里注册一下
-    'myfirstapp.apps.MyfirstappConfig'
+    'myfirstapp.apps.MyfirstappConfig',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 自己编写的中间键
+    'resource.mymiddle.StatisticsMiddle',
 ]
 # 路由配置的起点
 ROOT_URLCONF = 'myfirst.urls'
@@ -68,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -75,17 +79,57 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myfirst.wsgi.application'
 
+# 缓存基于内存
+
+
+CACHES = {
+    'default': {
+        # 1. MemCache
+        # 'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        # 'LOCATION': '127.0.0.1:11211',
+
+        # 2. DB Cache
+        # 'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        # 'LOCATION': 'my_cache_table',
+
+        # 3. Filesystem Cache
+        # 'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # 'LOCATION': '/var/tmp/django_cache',
+
+        # 4. Local Mem Cache
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'backend-cache'
+    }
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     },
+#     'slave': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': '',
+#             'USER': '',
+#             'PASSWORD': '',
+#             'HOST': '127.0.0.1',
+#             'PORT': '3306',
+#         }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pythonclass',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -129,3 +173,85 @@ STATICFILES_DIRS = (
      os.path.join(BASE_DIR, 'static').replace('\\', '/'),
 )
 STATIC_ROOT_SELF=os.path.join(BASE_DIR, 'static')
+
+# django自带日志系统
+# s代表是字符串类型  d 代表是整数类型
+LOGGING={
+    'version':1,
+    # 格式器
+    'formatters':{
+        'standard':{
+            'format':'%(asctime)s [%(threadName)s :%(thread)d]-%(message)s '
+        },
+        'statistics':{
+           'format': '%(message)s'
+        }
+    },
+    # 过滤器
+    'filters':{
+        'xxx':{
+        #     过滤器路径
+            '()':'ops.XXXFilter'
+        }
+    },
+     #处理器
+    'handlers':{
+        #输出到控制台
+        'console_handler':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter':'standard'
+        },
+        #输出到文件
+        'file_handler':{
+            'level':'WARNING',
+            'class':'logging.handlers.RotatingFileHandler',
+            #todo 可能这个日志文件不存在
+            'filename':os.path.join(BASE_DIR,'my.log'),
+            'maxBytes':100*1024*1024,
+            #备份
+            'backupCount':3,
+            'formatter':'standard',
+            'encoding':'utf-8'
+        },
+        'statistics_handler':{
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            #todo 可能这个日志文件不存在
+            'filename':os.path.join(BASE_DIR,'statistics.log'),
+            'maxBytes':100*1024*5,
+            #备份
+            'backupCount':3,
+            'formatter':'statistics',
+            'encoding':'utf-8'
+        }
+    },
+    'loggers':{
+        'django':{
+            'handlers':['console_handler','file_handler'],
+            'filters':['xxx'],
+            'level':'DEBUG'
+        },
+        'statistic':{
+            'handlers':['statistics_handler'],
+            'level':'DEBUG'
+        }
+    }
+}
+CRONJOBS=[
+    ('/1 * * * * *','resource.analyze.send_email')
+]
+
+# Email config
+# QQ邮箱 SMTP 服务器地址
+EMAIL_HOST = 'smtp.qq.com'
+# 端口  附加码25
+EMAIL_PORT = 465
+# 发送邮件的邮箱
+EMAIL_HOST_USER = '@qq.com'
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = ''
+# 开启TLS
+EMAIL_USE_TLS = True
+# 收件人看到的发件人
+EMAIL_FROM = '@qq.com'
